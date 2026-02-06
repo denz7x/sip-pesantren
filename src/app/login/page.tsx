@@ -4,7 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { loginAction, getRoleRedirectUrl } from "./actions";
+import { loginAction } from "./actions";
+
+export type UserRole = "ADMIN" | "USTADZ" | "ORANG_TUA";
+
+function getRoleRedirectUrl(role: UserRole): string {
+  switch (role) {
+    case "ADMIN":
+      return "/admin";
+    case "USTADZ":
+      return "/ustadz";
+    case "ORANG_TUA":
+      return "/orang-tua";
+    default:
+      return "/login";
+  }
+}
 
 export default function LoginPage() {
   const router = useRouter();

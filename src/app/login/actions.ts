@@ -91,15 +91,4 @@ export async function requireAuth(allowedRoles?: UserRole[]): Promise<UserSessio
   return session;
 }
 
-export function getRoleRedirectUrl(role: UserRole): string {
-  switch (role) {
-    case "ADMIN":
-      return "/admin";
-    case "USTADZ":
-      return "/ustadz";
-    case "ORANG_TUA":
-      return "/orang-tua";
-    default:
-      return "/login";
-  }
-}
+
