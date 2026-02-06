@@ -1,87 +1,98 @@
-# Active Context: Next.js Starter Template
+# Active Context: SIP-Baiturrohman Management System
 
 ## Current State
 
-**Template Status**: ✅ Ready for development
+**Project Status**: ✅ Complete - Sistem Informasi Pondok Pesanren
 
-The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. It's ready for AI-assisted expansion to build any type of application.
+A comprehensive pondok pesant management system built with Next.js 16, TypeScript, and Tailwind CSS 4. Features a modern, clean, and responsive design with tosca/green color scheme.
 
 ## Recently Completed
 
-- [x] Base Next.js 16 setup with App Router
-- [x] TypeScript configuration with strict mode
-- [x] Tailwind CSS 4 integration
-- [x] ESLint configuration
-- [x] Memory bank documentation
-- [x] Recipe system for common features
+- [x] Database Schema Design (Users, Santri, Ustadz, Kelas, Absensi, Hafalan, Transaksi, Pelanggaran)
+- [x] UI Components Library (Button, Card, Input, Badge, Table, Modal)
+- [x] Dashboard Layout with Sidebar and Header (Tosca theme)
+- [x] Authentication System with Role-Based Access (Admin, Ustadz, Orang Tua)
+- [x] Admin Dashboard with full CRUD access
+- [x] Ustadz Dashboard for data entry (Absensi, Hafalan, Pelanggaran, Kasir)
+- [x] Orang Tua Dashboard with monitoring (Today's summary, Charts, Transactions)
+- [x] Login Page with demo accounts
 
 ## Current Structure
 
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
-| `src/app/page.tsx` | Home page | ✅ Ready |
-| `src/app/layout.tsx` | Root layout | ✅ Ready |
-| `src/app/globals.css` | Global styles | ✅ Ready |
-| `.kilocode/` | AI context & recipes | ✅ Ready |
+| `src/app/login/page.tsx` | Login page | ✅ Complete |
+| `src/app/admin/page.tsx` | Admin dashboard | ✅ Complete |
+| `src/app/ustadz/page.tsx` | Ustadz dashboard | ✅ Complete |
+| `src/app/orang-tua/page.tsx` | Parent dashboard | ✅ Complete |
+| `src/components/ui/` | UI components | ✅ Complete |
+| `src/components/layout/` | Layout components | ✅ Complete |
+| `src/db/schema.ts` | Database types | ✅ Complete |
+| `src/lib/auth.ts` | Authentication | ✅ Complete |
+| `src/lib/utils.ts` | Utilities | ✅ Complete |
 
-## Current Focus
+## User Roles & Features
 
-The template is ready. Next steps depend on user requirements:
+### 1. ADMIN (Pengelola)
+- ✅ Full CRUD access to all data
+- ✅ Manage Santri, Ustadz, Orang Tua
+- ✅ Top-up saldo for students
+- ✅ View global financial recap
 
-1. What type of application to build
-2. What features are needed
-3. Design/branding preferences
+### 2. USTADZ (Penginput Data)
+- ✅ Daily attendance input
+- ✅ Tahfidz recording (Surat, Ayat, Nilai, Catatan)
+- ✅ Violation journal (Poin Kedisiplinan)
+- ✅ POS/Cashier for transactions
 
-## Quick Start Guide
+### 3. ORANG TUA (Viewer)
+- ✅ View only their children's data
+- ✅ Dashboard with today's summary (Saldo, Absensi, Hafalan)
+- ✅ Attendance charts and Tahfidz charts
+- ✅ Financial history (Topup, Spending)
+- ✅ Violation notifications
 
-### To add a new page:
+## Database Schema
 
-Create a file at `src/app/[route]/page.tsx`:
-```tsx
-export default function NewPage() {
-  return <div>New page content</div>;
-}
-```
+### Main Tables
+- **users** - Authentication (Admin, Ustadz, Orang Tua)
+- **santris** - Student data with wallet balance
+- **ustadzs** - Teacher data
+- **kelass** - Classes
+- **absensis** - Daily attendance
+- **setoran_hafalans** - Tahfidz recordings
+- **transaksis** - Financial transactions
+- **pelanggarnas** - Discipline violations
+- **notifikasis** - Notifications
 
-### To add components:
+## Color Scheme
 
-Create `src/components/` directory and add components:
-```tsx
-// src/components/ui/Button.tsx
-export function Button({ children }: { children: React.ReactNode }) {
-  return <button className="px-4 py-2 bg-blue-600 text-white rounded">{children}</button>;
-}
-```
+- Primary: Tosca Green (#2d9596)
+- Secondary: Darker Tosca (#247f80)
+- Background: Light Gray (#f9fafb)
+- Cards: White (#ffffff)
 
-### To add a database:
+## Demo Accounts
 
-Follow `.kilocode/recipes/add-database.md`
-
-### To add API routes:
-
-Create `src/app/api/[route]/route.ts`:
-```tsx
-import { NextResponse } from "next/server";
-
-export async function GET() {
-  return NextResponse.json({ message: "Hello" });
-}
-```
-
-## Available Recipes
-
-| Recipe | File | Use Case |
-|--------|------|----------|
-| Add Database | `.kilocode/recipes/add-database.md` | Data persistence with Drizzle + SQLite |
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@pesantren.com | demo123 |
+| Ustadz | ustadz@pesastricht.com | demo123 |
+| Orang Tua | ortu@pesanten.com | demo123 |
 
 ## Pending Improvements
 
-- [ ] Add more recipes (auth, email, etc.)
-- [ ] Add example components
-- [ ] Add testing setup recipe
+- [ ] API Routes for CRUD operations
+- [ ] Server Actions for data mutations
+- [ ] Real database integration (Drizzle ORM)
+- [ ] Image upload for profiles
+- [ ] Notification system for parents
+- [ ] Advanced charts with Recharts
+- [ ] Export reports functionality
 
 ## Session History
 
 | Date | Changes |
 |------|---------|
-| Initial | Template created with base setup |
+| Initial | Base Next.js template created |
+| 2024 | SIP-Baiturrohman complete implementation |
