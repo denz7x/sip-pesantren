@@ -77,6 +77,7 @@ export async function login(email: string, password: string): Promise<{ success:
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 7, // 7 days
+    path: "/",
   });
 
   return { success: true };

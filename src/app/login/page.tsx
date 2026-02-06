@@ -38,8 +38,9 @@ export default function LoginPage() {
 
       if (result.success && result.role) {
         // Small delay to ensure cookie is set before redirect
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        router.push(getRoleRedirectUrl(result.role));
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        // Use window.location for reliable redirect after cookie set
+        window.location.href = getRoleRedirectUrl(result.role);
       } else {
         setError(result.error || "Login gagal");
       }
