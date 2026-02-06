@@ -19,6 +19,10 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 - [x] Fix: Move auth to server action for client-side login
 - [x] Fix: Server action function exports must be async (getRoleRedirectUrl moved to page)
 - [x] Fix: Add password validation (min 6 chars) and delay before redirect for cookie set
+- [x] Fix: Orang Tua dashboard authentication (Server Component with requireAuth)
+- [x] Feat: Add all Admin CRUD pages (Santri, Topup, Keuangan, Ustadz)
+- [x] Feat: Add all Ustadz data entry pages (Absensi, Hafalan, Pelanggaran, Kasir)
+- [x] Feat: Add logout functionality with API endpoint
 
 ## Current Structure
 
@@ -26,8 +30,18 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 |----------------|---------|--------|
 | `src/app/login/page.tsx` | Login page | ✅ Complete |
 | `src/app/admin/page.tsx` | Admin dashboard | ✅ Complete |
+| `src/app/admin/santri/page.tsx` | Kelola Santri | ✅ Complete |
+| `src/app/admin/topup/page.tsx` | Top-up Saldo | ✅ Complete |
+| `src/app/admin/keuangan/page.tsx` | Rekapitulasi Keuangan | ✅ Complete |
+| `src/app/admin/ustadz/page.tsx` | Kelola Ustadz | ✅ Complete |
 | `src/app/ustadz/page.tsx` | Ustadz dashboard | ✅ Complete |
+| `src/app/ustadz/absensi/page.tsx` | Input Absensi | ✅ Complete |
+| `src/app/ustadz/hafalan/page.tsx` | Setoran Hafalan | ✅ Complete |
+| `src/app/ustadz/pelanggaran/page.tsx` | Jurnal Pelanggaran | ✅ Complete |
+| `src/app/ustadz/kasir/page.tsx` | POS / Kasir | ✅ Complete |
 | `src/app/orang-tua/page.tsx` | Parent dashboard | ✅ Complete |
+| `src/app/orang-tua/transaksi/page.tsx` | Riwayat Transaksi | ✅ Complete |
+| `src/app/api/auth/logout/route.ts` | Logout API | ✅ Complete |
 | `src/components/ui/` | UI components | ✅ Complete |
 | `src/components/layout/` | Layout components | ✅ Complete |
 | `src/db/schema.ts` | Database types | ✅ Complete |
@@ -80,9 +94,9 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@pesantrian.com | demo123 |
-| Ustadz | ustadz@pesantrian.com | demo123 |
-| Orang Tua | ortu@pesantrian.com | demo123 |
+| Admin | admin@pesantren.com | demo123 |
+| Ustadz | ustadz@pesantren.com | demo123 |
+| Orang Tua | ortu@pesantren.com | demo123 |
 
 ## Pending Improvements
 
@@ -104,3 +118,7 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 | 2024-02-06 | Fix login: Add cookie set delay before redirect |
 | 2024-02-06 | Fix login: Update demo account email addresses in context |
 | 2024-02-06 | Fix: Add password validation (min 6 chars) for better security |
+| 2024-02-06 | Fix: Orang Tua dashboard now uses Server Component with requireAuth |
+| 2024-02-06 | Feat: Complete all Admin CRUD pages |
+| 2024-02-06 | Feat: Complete all Ustadz data entry pages |
+| 2024-02-06 | Feat: Add logout functionality |
