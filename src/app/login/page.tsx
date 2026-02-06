@@ -37,6 +37,8 @@ export default function LoginPage() {
       const result = await loginAction(email, password);
 
       if (result.success && result.role) {
+        // Small delay to ensure cookie is set before redirect
+        await new Promise((resolve) => setTimeout(resolve, 100));
         router.push(getRoleRedirectUrl(result.role));
       } else {
         setError(result.error || "Login gagal");

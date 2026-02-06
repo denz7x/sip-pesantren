@@ -18,6 +18,7 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 - [x] Login Page with demo accounts
 - [x] Fix: Move auth to server action for client-side login
 - [x] Fix: Server action function exports must be async (getRoleRedirectUrl moved to page)
+- [x] Fix: Add password validation (min 6 chars) and delay before redirect for cookie set
 
 ## Current Structure
 
@@ -79,9 +80,9 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@pesantren.com | demo123 |
-| Ustadz | ustadz@pesastricht.com | demo123 |
-| Orang Tua | ortu@pesanten.com | demo123 |
+| Admin | admin@pesantrian.com | demo123 |
+| Ustadz | ustadz@pesantrian.com | demo123 |
+| Orang Tua | ortu@pesantrian.com | demo123 |
 
 ## Pending Improvements
 
@@ -99,3 +100,7 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 |------|---------|
 | Initial | Base Next.js template created |
 | 2024 | SIP-Baiturrohman complete implementation |
+| 2024-02-06 | Fix login: Add password validation (min 6 chars) and redirect delay |
+| 2024-02-06 | Fix login: Add cookie set delay before redirect |
+| 2024-02-06 | Fix login: Update demo account email addresses in context |
+| 2024-02-06 | Fix: Add password validation (min 6 chars) for better security |

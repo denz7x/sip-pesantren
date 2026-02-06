@@ -36,12 +36,22 @@ const mockUsers: Record<string, UserSession> = {
 
 export async function loginAction(
   email: string,
-  _password: string
+  password: string
 ): Promise<{ success: boolean; error?: string; role?: UserRole }> {
+  // Validate inputs
+  if (!email || !password) {
+    return { success: false, error: "Email dan password harus diisi" };
+  }
+
   const user = mockUsers[email];
 
   if (!user) {
     return { success: false, error: "Email tidak ditemukan" };
+  }
+
+  // For demo purposes, accept any password that is at least 6 characters
+  if (password.length < 6) {
+    return { success: false, error: "Password minimal 6 karakter" };
   }
 
   const cookieStore = await cookies();
