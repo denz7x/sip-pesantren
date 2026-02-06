@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { login, getRoleRedirectUrl } from "@/lib/auth";
+import { loginAction, getRoleRedirectUrl } from "./actions";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,18 +19,10 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const result = await login(email, password);
+      const result = await loginAction(email, password);
 
-      if (result.success) {
-        // Get user from mock data to determine redirect
-        const mockUsers: Record<string, { role: string; name: string }> = {
-          "admin@pesantren.com": { role: "ADMIN", name: "Pengelola" },
-          "ustadz@pesantren.com": { role: "USTADZ", name: "Ustadz Ahmad" },
-          "ortu@pesantren.com": { role: "ORANG_TUA", name: "Bapak/Ibu Orang Tua" },
-        };
-
-        const user = mockUsers[email];
-        router.push(getRoleRedirectUrl(user.role as "ADMIN" | "USTADZ" | "ORANG_TUA"));
+      if (result.success && result.role) {
+        router.push(getRoleRedirectUrl(result.role));
       } else {
         setError(result.error || "Login gagal");
       }
