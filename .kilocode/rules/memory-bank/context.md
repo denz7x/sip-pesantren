@@ -16,6 +16,7 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 - [x] Ustadz Dashboard for data entry (Absensi, Hafalan, Pelanggaran, Kasir)
 - [x] Orang Tua Dashboard with monitoring (Today's summary, Charts, Transactions)
 - [x] Login Page with demo accounts
+- [x] Fix: Move auth to server action for client-side login
 
 ## Current Structure
 
@@ -28,7 +29,8 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 | `src/components/ui/` | UI components | ✅ Complete |
 | `src/components/layout/` | Layout components | ✅ Complete |
 | `src/db/schema.ts` | Database types | ✅ Complete |
-| `src/lib/auth.ts` | Authentication | ✅ Complete |
+| `src/app/login/actions.ts` | Server actions for auth | ✅ Complete |
+| `src/lib/auth.ts` | Authentication (Server Components) | ✅ Complete |
 | `src/lib/utils.ts` | Utilities | ✅ Complete |
 
 ## User Roles & Features
