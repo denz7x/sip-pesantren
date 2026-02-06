@@ -17,6 +17,7 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 - [x] Orang Tua Dashboard with monitoring (Today's summary, Charts, Transactions)
 - [x] Login Page with demo accounts
 - [x] Fix: Move auth to server action for client-side login
+- [x] Fix: Server action function exports must be async (getRoleRedirectUrl moved to page)
 
 ## Current Structure
 
