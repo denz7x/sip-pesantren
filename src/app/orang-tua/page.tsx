@@ -1,11 +1,8 @@
-"use client";
-
-import { useState } from "react";
+import { requireAuth } from "@/lib/auth";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, StatCard, CardHeader } from "@/components/ui/Card";
-import { Badge, AttendanceBadge, TahfidzBadge, TransactionBadge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { Badge } from "@/components/ui/Badge";
+import { formatCurrency } from "@/lib/utils";
 
 // Demo data for Orang Tua dashboard
 const childData = {
@@ -61,14 +58,15 @@ const violations = [
   { tanggal: "2024-01-05", jenis: "Tidak Membawa Kitab", kategori: "RINGAN", poin: 3 },
 ];
 
-export default function OrangTuaDashboardPage() {
+export default async function OrangTuaDashboardPage() {
+  const session = await requireAuth(["ORANG_TUA"]);
   const child = childData;
   const summary = todaySummary;
 
   return (
     <DashboardLayout
       role="ORANG_TUA"
-      userName="Bapak/Ibu Ahmad"
+      userName={session.name}
       pageTitle="Dashboard Orang Tua"
     >
       {/* Child Info Card */}
@@ -225,9 +223,9 @@ export default function OrangTuaDashboardPage() {
           <Card variant="bordered">
             <div className="flex items-center justify-between mb-4">
               <CardHeader title="Riwayat Transaksi" subtitle="Pencatatan keuangan" />
-              <Button variant="outline" size="sm">
-                Lihat Semua
-              </Button>
+              <a href="/orang-tua/transaksi" className="text-sm text-[#2d9596] hover:underline">
+                Lihat Semua →
+              </a>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
@@ -337,5 +335,54 @@ function CheckIcon() {
     <svg className="w-12 h-12 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
+  );
+}
+
+function AttendanceBadge({ status }: { status: string }) {
+  const variants: Record<string, { class: string; label: string }> = {
+    HADIR: { class: "bg-green-100 text-green-800", label: "Hadir" },
+    SAKIT: { class: "bg-yellow-100 text-yellow-800", label: "Sakit" },
+    IZIN: { class: "bg-blue-100 text-blue-800", label: "Izin" },
+    ALPHA: { class: "bg-red-100 text-red-800", label: "Alpha" },
+  };
+
+  const { class: variantClass, label } = variants[status] || { class: "bg-gray-100 text-gray-800", label: status };
+
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${variantClass}`}>
+      {label}
+    </span>
+  );
+}
+
+function TahfidzBadge({ quality }: { quality: string }) {
+  const variants: Record<string, { class: string; label: string }> = {
+    SANGAT_BAIK: { class: "bg-green-100 text-green-800", label: "Sangat Baik" },
+    BAIK: { class: "bg-blue-100 text-blue-800", label: "Baik" },
+    CUKUP: { class: "bg-yellow-100 text-yellow-800", label: "Cukup" },
+    KURANG: { class: "bg-red-100 text-red-800", label: "Kurang" },
+  };
+
+  const { class: variantClass, label } = variants[quality] || { class: "bg-gray-100 text-gray-800", label: quality };
+
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${variantClass}`}>
+      {label}
+    </span>
+  );
+}
+
+function TransactionBadge({ type }: { type: string }) {
+  const variants: Record<string, { class: string; label: string }> = {
+    TOPUP: { class: "bg-green-100 text-green-800", label: "Topup" },
+    DEBIT: { class: "bg-red-100 text-red-800", label: "Debit" },
+  };
+
+  const { class: variantClass, label } = variants[type] || { class: "bg-gray-100 text-gray-800", label: type };
+
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${variantClass}`}>
+      {label}
+    </span>
   );
 }
