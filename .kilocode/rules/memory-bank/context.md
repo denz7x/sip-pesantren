@@ -23,6 +23,7 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 - [x] Feat: Add all Admin CRUD pages (Santri, Topup, Keuangan, Ustadz)
 - [x] Feat: Add all Ustadz data entry pages (Absensi, Hafalan, Pelanggaran, Kasir)
 - [x] Feat: Add logout functionality with API endpoint
+- [x] Fix: Improve cookie settings (add path: "/") and use window.location for redirect reliability
 
 ## Current Structure
 
@@ -122,3 +123,4 @@ A comprehensive pondok pesant management system built with Next.js 16, TypeScrip
 | 2024-02-06 | Feat: Complete all Admin CRUD pages |
 | 2024-02-06 | Feat: Complete all Ustadz data entry pages |
 | 2024-02-06 | Feat: Add logout functionality |
+| 2024-02-06 | Fix: Improve cookie settings (add path: "/") and use window.location for redirect reliability |
