@@ -12,28 +12,6 @@ interface UserSession {
   name: string;
 }
 
-// Mock user data for demo purposes
-const mockUsers: Record<string, UserSession> = {
-  "admin@pesantren.com": {
-    id: 1,
-    email: "admin@pesantren.com",
-    role: "ADMIN",
-    name: "Pengelola",
-  },
-  "ustadz@pesantren.com": {
-    id: 2,
-    email: "ustadz@pesantren.com",
-    role: "USTADZ",
-    name: "Ustadz Ahmad",
-  },
-  "ortu@pesantren.com": {
-    id: 3,
-    email: "ortu@pesantren.com",
-    role: "ORANG_TUA",
-    name: "Bapak/Ibu Orang Tua",
-  },
-};
-
 export async function loginAction(
   email: string,
   password: string
@@ -43,28 +21,39 @@ export async function loginAction(
     return { success: false, error: "Email dan password harus diisi" };
   }
 
-  const user = mockUsers[email];
+  try {
+    // Call the API to authenticate
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  if (!user) {
-    return { success: false, error: "Email tidak ditemukan" };
+    const data = await response.json();
+
+    if (!data.success) {
+      return { success: false, error: data.error || "Login gagal" };
+    }
+
+    // Set session cookie
+    const cookieStore = await cookies();
+    cookieStore.set("session", btoa(JSON.stringify(data.user)), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    });
+
+    return { success: true, role: data.user.role };
+  } catch (error) {
+    console.error("Login error:", error);
+    return { success: false, error: "Terjadi kesalahan saat login" };
   }
-
-  // For demo purposes, accept any password that is at least 6 characters
-  if (password.length < 6) {
-    return { success: false, error: "Password minimal 6 karakter" };
-  }
-
-  const cookieStore = await cookies();
-  cookieStore.set("session", btoa(JSON.stringify(user)), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-    path: "/",
-  });
-
-  return { success: true, role: user.role };
 }
+
 
 export async function logoutAction() {
   const cookieStore = await cookies();
@@ -101,5 +90,3 @@ export async function requireAuth(allowedRoles?: UserRole[]): Promise<UserSessio
 
   return session;
 }
-
-

@@ -13,9 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Template",
-  description: "A minimal Next.js starter template",
+  title: "SIP Pesantren - Sistem Informasi Pondok",
+  description: "Sistem Informasi Pondok Pesantren Baiturrohman",
+  icons: {
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 };
+
 
 export default function RootLayout({
   children,

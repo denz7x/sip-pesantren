@@ -2,147 +2,138 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { loginAction } from "./actions";
+import { Logo } from "@/components/ui/Logo";
 
-export type UserRole = "ADMIN" | "USTADZ" | "ORANG_TUA";
-
-function getRoleRedirectUrl(role: UserRole): string {
-  switch (role) {
-    case "ADMIN":
-      return "/admin";
-    case "USTADZ":
-      return "/ustadz";
-    case "ORANG_TUA":
-      return "/orang-tua";
-    default:
-      return "/login";
-  }
-}
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
-    setIsLoading(true);
+    setLoading(true);
 
-    try {
-      const result = await loginAction(email, password);
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
 
-      if (result.success && result.role) {
-        // Small delay to ensure cookie is set before redirect
-        await new Promise((resolve) => setTimeout(resolve, 200));
-        // Use window.location for reliable redirect after cookie set
-        window.location.href = getRoleRedirectUrl(result.role);
-      } else {
-        setError(result.error || "Login gagal");
-      }
-    } catch {
-      setError("Terjadi kesalahan");
-    } finally {
-      setIsLoading(false);
+    const result = await loginAction(username, password);
+
+    if (!result.success) {
+      setError(result.error || "Login gagal");
+      setLoading(false);
+      return;
     }
-  };
 
-  const demoAccounts = [
-    { email: "admin@pesantren.com", role: "Admin", desc: "Akses Penuh" },
-    { email: "ustadz@pesantren.com", role: "Ustadz", desc: "Input Data" },
-    { email: "ortu@pesantren.com", role: "Orang Tua", desc: "Monitoring" },
-  ];
+    // Redirect based on role
+    switch (result.role) {
+      case "ADMIN":
+        router.push("/admin");
+        break;
+      case "USTADZ":
+        router.push("/ustadz");
+        break;
+      case "ORANG_TUA":
+        router.push("/orang-tua");
+        break;
+      default:
+        router.push("/");
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2d9596] to-[#247f80] flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo & Title */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-lg mb-4">
-            <span className="text-[#2d9596] font-bold text-2xl">SIP</span>
+    <div className="min-h-screen bg-gradient-to-br from-tosca-100 via-tosca-200 to-tosca-300 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-10 left-10 w-72 h-72 bg-tosca-400/30 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-tosca-300/30 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/20 rounded-full blur-3xl" />
+
+      <div className="w-full max-w-md relative z-10">
+        {/* Logo Section */}
+        <div className="text-center mb-8 animate-slide-up">
+          <div className="flex justify-center mb-4">
+            <Logo size="xl" variant="dark" showText={false} />
           </div>
-          <h1 className="text-2xl font-bold text-white">SIP-Baiturrohman</h1>
-          <p className="text-white/80 mt-1">Sistem Informasi Pondok Pesanren</p>
+          <h1 className="text-2xl font-bold text-tosca-800 mb-2">Sistem Informasi & Administrasi Pondok Pesantren (SIAP) </h1>
+          <p className="text-tosca-600 font-medium">Pondok Pesantren Baiturrohman</p>
         </div>
 
-        {/* Login Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 text-center">
-            Masuk ke Akun Anda
-          </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Masukkan email Anda"
-              required
-            />
+        {/* Login Card */}
+        <div className="glass-card p-8 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <h2 className="text-2xl font-bold text-tosca-800 mb-6 text-center">Masuk ke Akun</h2>
 
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Masukkan password Anda"
-              required
-            />
+          {error && (
+            <div className="mb-6 p-4 bg-red-100/80 border border-red-300 rounded-xl text-red-700 text-sm animate-slide-up">
+              {error}
+            </div>
+          )}
 
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{error}</p>
-              </div>
-            )}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label htmlFor="username" className="block text-sm font-semibold text-tosca-700 mb-2">
+                Username / Email
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                className="w-full px-4 py-3 rounded-xl glass-input focus:ring-2 focus:ring-tosca-500 focus:border-transparent transition-all"
+                placeholder="Masukkan username atau email"
+              />
+            </div>
 
-            <Button
+            <div>
+              <label htmlFor="password" className="block text-sm font-semibold text-tosca-700 mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                className="w-full px-4 py-3 rounded-xl glass-input focus:ring-2 focus:ring-tosca-500 focus:border-transparent transition-all"
+                placeholder="Masukkan password"
+              />
+            </div>
+
+            <button
               type="submit"
-              className="w-full"
-              size="lg"
-              isLoading={isLoading}
+              disabled={loading}
+              className="w-full py-3.5 px-4 rounded-xl glass-button text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Masuk
-            </Button>
+              {loading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Memuat...
+                </>
+              ) : (
+                "Masuk"
+              )}
+            </button>
           </form>
-        </div>
 
-        {/* Demo Accounts */}
-        <div className="mt-6 bg-white/90 backdrop-blur rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">Akun Demo:</h3>
-          <div className="space-y-2">
-            {demoAccounts.map((account) => (
-              <button
-                key={account.email}
-                onClick={() => {
-                  setEmail(account.email);
-                  setPassword("demo123");
-                }}
-                className="w-full text-left p-3 rounded-lg bg-white hover:bg-gray-50 transition-colors border border-gray-100"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{account.role}</p>
-                    <p className="text-xs text-gray-500">{account.desc}</p>
-                  </div>
-                  <code className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">
-                    {account.email}
-                  </code>
-                </div>
-              </button>
-            ))}
-          </div>
+
         </div>
 
         {/* Footer */}
-        <p className="text-center text-white/60 text-sm mt-6">
-          © 2024 SIP-Baiturrohman. All rights reserved.
+        <p className="text-center mt-8 text-sm text-tosca-600">
+          © 2026 Pondok Pesantren Baiturrohman. All rights reserved.
         </p>
       </div>
+
+      {/* Watermark */}
+      <div className="absolute bottom-4 right-4 z-20">
+        <p className="text-xs text-white-500/60 font-medium bold">developed by @denz7x</p>
+      </div>
     </div>
+
   );
 }
