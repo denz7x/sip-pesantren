@@ -16,11 +16,15 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Prevent running on server-side rendering
+    if (typeof window === 'undefined') {
+      setIsLoading(false);
+      return;
+    }
+
     const fetchSession = async () => {
       try {
-        const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-
-        const response = await fetch(`${baseUrl}/api/auth/session`);
+        const response = await fetch('/api/auth/session');
         if (response.ok) {
           const data = await response.json();
           setUser(data);

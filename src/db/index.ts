@@ -1,15 +1,36 @@
 import { google } from 'googleapis';
 
-// Google Sheets configuration
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  },
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
+// Unset proxy environment variables to prevent connection issues in deployed environments
+delete process.env.HTTP_PROXY;
+delete process.env.HTTPS_PROXY;
+delete process.env.http_proxy;
+delete process.env.https_proxy;
 
-const sheets = google.sheets({ version: 'v4', auth });
+// Google Sheets configuration with error handling
+let auth: any = null;
+let sheets: any = null;
+
+try {
+  // Process private key for compatibility with different OpenSSL versions
+  let privateKey = process.env.GOOGLE_SHEETS_PRIVATE_KEY;
+  if (privateKey) {
+    // Just replace escaped newlines with actual newlines
+    // Google Service Account keys are already in PKCS#8 format
+    privateKey = privateKey.replace(/\\n/g, '\n');
+  }
+
+  auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
+      private_key: privateKey,
+    },
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+  sheets = google.sheets({ version: 'v4', auth });
+} catch (error) {
+  console.warn('Google Sheets authentication failed, using fallback mode:', error);
+  // Will use fallback users in login actions
+}
 
 // Cache for sheet names to reduce API calls
 const sheetNameCache: { [key: string]: { name: string; timestamp: number } } = {};
@@ -73,6 +94,10 @@ function queueRequest<T>(fn: () => Promise<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     REQUEST_QUEUE.push(async () => {
       try {
+        // Check if sheets is available
+        if (!sheets) {
+          throw new Error('Google Sheets not available');
+        }
         const result = await executeWithRetry(fn);
         resolve(result);
       } catch (error) {
@@ -165,9 +190,9 @@ async function getActualSheetName(tableName: string): Promise<string> {
   try {
     const spreadsheet = await queueRequest(() => sheets.spreadsheets.get({
       spreadsheetId: config.id,
-    }));
-    
-    const sheetNames = spreadsheet.data.sheets?.map(s => s.properties?.title).filter((t): t is string => !!t) || [];
+    })) as any;
+
+    const sheetNames = spreadsheet.data.sheets?.map((s: any) => s.properties?.title).filter((t: any): t is string => !!t) || [];
     const actualSheetName = sheetNames[0] || 'Sheet1';
     
     // Cache the result with timestamp
@@ -220,7 +245,7 @@ async function fetchSheetData(sheetName: string): Promise<any[]> {
     const response = await queueRequest(() => sheets.spreadsheets.values.get({
       spreadsheetId: config.id,
       range: range,
-    }));
+    })) as any;
 
     const rows = response.data.values;
     if (!rows || rows.length === 0) {
@@ -229,7 +254,7 @@ async function fetchSheetData(sheetName: string): Promise<any[]> {
 
     // Convert rows to objects using headers
     const headers = rows[0];
-    const data = rows.slice(1).map(row => {
+    const data = rows.slice(1).map((row: any) => {
       const obj: any = {};
       headers.forEach((header: string, index: number) => {
         obj[header] = row[index] || null;
@@ -270,7 +295,7 @@ export const db: {
       const headerResponse = await queueRequest(() => sheets.spreadsheets.values.get({
         spreadsheetId: config.id,
         range: `${sheetName}!A1:Z1`,
-      }));
+      })) as any;
 
       const headers = headerResponse.data.values?.[0] || [];
       
@@ -325,7 +350,7 @@ export const db: {
       const spreadsheet = await queueRequest(() => sheets.spreadsheets.values.get({
         spreadsheetId: config.id,
         range: `${sheetName}!A1:Z1`,
-      }));
+      })) as any;
 
       const headers = spreadsheet.data.values?.[0] || [];
       

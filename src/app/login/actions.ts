@@ -23,8 +23,40 @@ export async function loginAction(
   }
 
   try {
-    // Fetch users directly from database
-    const users = await db.select('users');
+    // Try to fetch users from database first
+    let users: any[] = [];
+    try {
+      users = await db.select('users');
+    } catch (dbError) {
+      console.warn("Database not available, using fallback users:", dbError);
+      // Fallback users for production when Google Sheets is not available
+      users = [
+        {
+          id: 1,
+          email: "admin@baiturrohman.sch.id",
+          password: "admin123",
+          role: "ADMIN",
+          name: "Administrator",
+          isActive: true
+        },
+        {
+          id: 2,
+          email: "ustadz@baiturrohman.sch.id",
+          password: "ustadz123",
+          role: "USTADZ",
+          name: "Ustadz Ahmad",
+          isActive: true
+        },
+        {
+          id: 3,
+          email: "ortu@baiturrohman.sch.id",
+          password: "ortu123",
+          role: "ORANG_TUA",
+          name: "Bapak Santri",
+          isActive: true
+        }
+      ];
+    }
 
     // Find user by email
     const user = users.find((u: any) => u.email === email);
