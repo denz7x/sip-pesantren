@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { db } from "@/db";
 
 export type UserRole = "ADMIN" | "USTADZ" | "ORANG_TUA";
 
@@ -22,24 +23,37 @@ export async function loginAction(
   }
 
   try {
-    // Call the API to authenticate
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    // Fetch users directly from database
+    const users = await db.select('users');
 
-    const data = await response.json();
+    // Find user by email
+    const user = users.find((u: any) => u.email === email);
 
-    if (!data.success) {
-      return { success: false, error: data.error || "Login gagal" };
+    if (!user) {
+      return { success: false, error: "Email tidak ditemukan" };
     }
+
+    // Check password (in production, use bcrypt)
+    if (user.password !== password) {
+      return { success: false, error: "Password salah" };
+    }
+
+    // Check if user is active
+    if (user.isActive === "false" || user.isActive === false) {
+      return { success: false, error: "Akun tidak aktif" };
+    }
+
+    // Create session
+    const session = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+    };
 
     // Set session cookie
     const cookieStore = await cookies();
-    cookieStore.set("session", btoa(JSON.stringify(data.user)), {
+    cookieStore.set("session", btoa(JSON.stringify(session)), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -47,7 +61,7 @@ export async function loginAction(
       path: "/",
     });
 
-    return { success: true, role: data.user.role };
+    return { success: true, role: user.role };
   } catch (error) {
     console.error("Login error:", error);
     return { success: false, error: "Terjadi kesalahan saat login" };

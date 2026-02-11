@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/USER/Desktop/SIPPesantren/5c545958-637b-416e-a3eb-5dcf940bcaca/src/app/page.tsx"],"sourcesContent":["import { redirect } from \"next/navigation\";\r\n\r\nexport default function HomePage() {\r\n  redirect(\"/login\");\r\n}\r\n"],"names":[],"mappings":";;;;AAAA;AAAA;;AAEe,SAAS;IACtB,IAAA,iMAAQ,EAAC;AACX"}}]
+}

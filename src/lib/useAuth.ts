@@ -18,7 +18,9 @@ export function useAuth() {
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        const response = await fetch("/api/auth/session");
+        const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+
+        const response = await fetch(`${baseUrl}/api/auth/session`);
         if (response.ok) {
           const data = await response.json();
           setUser(data);

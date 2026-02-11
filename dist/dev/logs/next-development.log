@@ -1,0 +1,7 @@
+[00:00:04.584] Server  LOG     ✓ Ready in 3s
+[00:00:16.715] Server  LOG     ○ Compiling / ...
+[00:00:23.478] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:49.569] Server  LOG     ○ Compiling /api/auth/login ...
+[00:02:01.802] Server  ERROR   Login error: Error: Route /api/auth/login with `dynamic = "error"` couldn't be rendered statically because it used `cookies()`. See more info here: https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering
+[00:02:06.040] Server  ERROR   Login error: Error: Route /api/auth/login with `dynamic = "error"` couldn't be rendered statically because it used `cookies()`. See more info here: https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering
+[00:02:10.780] Server  ERROR   Login error: Error: Route /api/auth/login with `dynamic = "error"` couldn't be rendered statically because it used `cookies()`. See more info here: https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering

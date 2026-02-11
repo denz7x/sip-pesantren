@@ -1,0 +1,50 @@
+{
+  "node": {
+    "4077296589ca4f3ce2dfedb8c7f2d8fdadc5adc7d6": {
+      "workers": {
+        "app/ustadz/absensi/page": {
+          "moduleId": "[project]/.next-internal/server/app/ustadz/absensi/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/ustadz/absensi/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "createAbsensi",
+          "filename": "src/app/ustadz/absensi/actions.ts"
+        }
+      },
+      "layer": {
+        "app/ustadz/absensi/page": "action-browser"
+      },
+      "exportedName": "createAbsensi",
+      "filename": "src/app/ustadz/absensi/actions.ts"
+    },
+    "608a8e100afddb968650bc0ad91f53b536de631dc7": {
+      "workers": {
+        "app/ustadz/absensi/page": {
+          "moduleId": "[project]/.next-internal/server/app/ustadz/absensi/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/ustadz/absensi/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updateAbsensi",
+          "filename": "src/app/ustadz/absensi/actions.ts"
+        }
+      },
+      "layer": {
+        "app/ustadz/absensi/page": "action-browser"
+      },
+      "exportedName": "updateAbsensi",
+      "filename": "src/app/ustadz/absensi/actions.ts"
+    },
+    "407409818b00f3061cb6b438f60454cf22dd50ba8b": {
+      "workers": {
+        "app/ustadz/absensi/page": {
+          "moduleId": "[project]/.next-internal/server/app/ustadz/absensi/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/ustadz/absensi/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "deleteAbsensi",
+          "filename": "src/app/ustadz/absensi/actions.ts"
+        }
+      },
+      "layer": {
+        "app/ustadz/absensi/page": "action-browser"
+      },
+      "exportedName": "deleteAbsensi",
+      "filename": "src/app/ustadz/absensi/actions.ts"
+    }
+  },
+  "edge": {}
+}

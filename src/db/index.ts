@@ -140,10 +140,10 @@ const sheetConfigs = {
     range: 'Sheet1!A:Z',
   },
   users: {
-    id: process.env.SHEET_ID_USERS,
+    id: process.env.SHEET_ID_USERS || '1EXAMPLE_USERS_SHEET_ID',
     gid: '0',
     range: 'Sheet1!A:Z',
-  }
+  },
 };
 
 // Helper function to get sheet config
